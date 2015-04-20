@@ -9,7 +9,7 @@ echo "Enter the interface you wish to add to xenbr0"
 read IFACE
 
 echo "Interface details are : "
-ipconfig $IFACE
+ifconfig $IFACE
 
 echo "Enter the IP you wish to assign to xenbr0 ( Ideally, you should use the same as the interface entered above )"
 read IP_ADDRESS
@@ -17,9 +17,10 @@ read IP_ADDRESS
 echo "Enter the netmask : (Default should be 255.255.255.0)  "
 read NETMASK
 
-echo "Enter the gateway IP addr"
-read GATEWAY
+currGateway=`route -n | grep -i ^0.0.0.0 | awk '{print $2}'`
 
+echo "Enter the gateway IP addr ( Current gateway : $currGateway )"
+read GATEWAY
 
 ifconfig $IFACE 0.0.0.0
 brctl addbr xenbr0
